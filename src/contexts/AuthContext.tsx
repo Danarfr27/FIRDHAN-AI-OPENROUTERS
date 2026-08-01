@@ -77,7 +77,13 @@ export const getAuthUsers = (): AuthCredential[] => {
   }
 
   if (users.length === 0) {
-    console.warn("No auth users configured via VITE_AUTH_USERS or USERxx_USER/USERxx_PASS");
+    const fallbackUsers: AuthCredential[] = [
+      { username: "danar27", password: "danar27", name: "Danar Firdhan" },
+      { username: "admin", password: "admin123", name: "System Admin" },
+    ];
+
+    console.warn("No auth users configured via VITE_AUTH_USERS or USERxx_USER/USERxx_PASS. Using built-in fallback credentials.");
+    return fallbackUsers;
   }
 
   return users;

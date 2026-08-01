@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ModelProvider } from '@/contexts/ModelContext'
 import './index.css'

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Plus, ShieldCheck, Globe, MoonStar, QrCode, ShoppingBag, KeyRound, LogOut, Trash2, PanelRightOpen, PanelRightClose } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Plus, ShieldCheck, Globe, MoonStar, QrCode, ShoppingBag, KeyRound, LogOut, Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import TopBar from '../sections/TopBar';
 import SystemInfo from '../sections/SystemInfo';
@@ -11,8 +11,6 @@ import SystemLogs from '../sections/SystemLogs';
 const ACTIVE_SESSION_KEY = 'firdhan_active_chat_session';
 
 export default function Home() {
-  const navigate = useNavigate();
-  const { logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(true);
   const [activeSession, setActiveSession] = useState<string>(() => {
     if (typeof window === 'undefined') return '#0427';
@@ -42,6 +40,9 @@ export default function Home() {
       window.localStorage.setItem(ACTIVE_SESSION_KEY, activeSession);
     }
   }, [activeSession]);
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const createNewChat = () => {
     if (typeof window !== 'undefined') {
@@ -94,7 +95,7 @@ export default function Home() {
       className="min-h-screen flex flex-col scanlines relative"
       style={{ background: 'var(--bg-base)' }}
     >
-      <TopBar />
+      <TopBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
       <div
         className="flex-1 flex flex-col lg:flex-row gap-2.5 p-2.5 overflow-hidden relative"
@@ -112,42 +113,6 @@ export default function Home() {
           <TokenManagement />
         </div>
 
-        <div className="hidden lg:block absolute right-2.5 top-2.5 z-20">
-          <button
-            type="button"
-            onClick={() => setMenuOpen((value) => !value)}
-            className="mb-2 ml-auto flex items-center gap-2 rounded-md border border-[#ff7a18]/20 bg-[#120d0d]/90 px-2.5 py-1.5 text-[10px] font-mono font-semibold uppercase tracking-[0.2em] text-[#f5d9c7] shadow-[0_0_20px_rgba(255,122,24,0.12)] transition hover:text-white"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          >
-            {menuOpen ? <PanelRightClose size={13} /> : <PanelRightOpen size={13} />}
-            {menuOpen ? 'Hide' : 'Menu'}
-          </button>
-
-          <div
-            className={`flex flex-col gap-2 rounded-md border border-[#ff7a18]/15 bg-[#120d0d]/95 p-3 shadow-[0_0_30px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-all duration-300 ${menuOpen ? 'translate-x-0 opacity-100 pointer-events-auto' : 'translate-x-[115%] opacity-0 pointer-events-none'}`}
-            style={{ width: 210, height: 'fit-content' }}
-          >
-            <div className="flex items-center justify-between pb-2 border-b border-[#ff7a18]/15">
-              <span className="font-mono text-[11px] font-semibold tracking-[0.18em] text-[#f5d9c7]">MENU</span>
-              <button type="button" onClick={() => setMenuOpen(false)} className="text-[#f5d9c7]/60 hover:text-white text-xs">×</button>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              {menuItems.map(({ label, icon: Icon, action }) => (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={action}
-                  className="flex items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm font-mono transition-all duration-150 hover:bg-[#ff7a18]/10 hover:border hover:border-[#ff7a18]/20"
-                  style={{ color: 'var(--text-primary)', border: '1px solid transparent' }}
-                >
-                  <Icon size={14} style={{ color: '#ffb07c' }} />
-                  <span>{label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
 
       <div className="px-2.5 pb-2.5">
