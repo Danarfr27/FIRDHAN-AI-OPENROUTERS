@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Plus, ShieldCheck, Globe, MoonStar, QrCode, ShoppingBag, KeyRound, LogOut, Trash2 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import TopBar from '../sections/TopBar';
 import SystemInfo from '../sections/SystemInfo';
 import MainConsole from '../sections/MainConsole';
@@ -40,55 +37,6 @@ export default function Home() {
       window.localStorage.setItem(ACTIVE_SESSION_KEY, activeSession);
     }
   }, [activeSession]);
-
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-
-  const createNewChat = () => {
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('firdhan-new-chat-request'));
-    }
-  };
-
-  const clearHistory = () => {
-    if (typeof window === 'undefined') return;
-    window.localStorage.removeItem('firdhan_chat_history_v1');
-    window.dispatchEvent(new CustomEvent('firdhan-chat-history-updated'));
-  };
-
-  const hackerThemeLoginAlert = () => {
-    if (typeof window === 'undefined') return;
-    window.alert('Theme locked: hacker mode active. Please log in to continue.');
-  };
-
-  const openExternal = (url: string) => {
-    if (typeof window !== 'undefined') {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
-  };
-
-  const handleLogout = () => {
-    logout();
-    if (typeof window !== 'undefined') {
-      window.localStorage.removeItem('user');
-      window.location.assign('/login');
-    } else {
-      navigate('/login', { replace: true });
-    }
-    setMenuOpen(false);
-  };
-
-  const menuItems = [
-    { label: 'New Chat', icon: Plus, action: createNewChat },
-    { label: 'AI Check', icon: ShieldCheck, action: () => openExternal('https://apicheck-liart.vercel.app/') },
-    { label: 'World Monitor', icon: Globe, action: () => openExternal('https://cacingbesaralaska.vercel.app/') },
-    { label: 'Toggle Theme', icon: MoonStar, action: hackerThemeLoginAlert },
-    { label: 'QR', icon: QrCode, action: () => openExternal('https://qr-firdhan.vercel.app/') },
-    { label: 'Shop', icon: ShoppingBag, action: () => openExternal('https://fearhackshop.vercel.app') },
-    { label: 'Temp.OTP', icon: KeyRound, action: () => openExternal('https://tempmail-orpin.vercel.app/login.html') },
-    { label: 'Logout', icon: LogOut, action: handleLogout },
-    { label: 'Clear history', icon: Trash2, action: clearHistory },
-  ];
 
   return (
     <div
