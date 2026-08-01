@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Github, Music, Zap, Terminal, Code, Server, Shield } from 'lucide-react';
 
 const models = [
@@ -15,6 +15,17 @@ export default function TopBar() {
   const [latency, setLatency] = useState(27);
   const [uptime, setUptime] = useState(41);
   const [showTools, setShowTools] = useState(false);
+  const toolsRef = useRef<HTMLDivElement | null>(null);
+
+  const quickTools = [
+    { icon: Music, label: 'Music', url: 'https://music.youtube.com/' },
+    { icon: Github, label: 'GitHub', url: 'https://github.com/' },
+    { icon: Zap, label: 'Launch', url: 'https://www.google.com/' },
+    { icon: Terminal, label: 'Terminal', url: 'https://www.google.com/' },
+    { icon: Code, label: 'Code', url: 'https://www.google.com/' },
+    { icon: Server, label: 'Server', url: 'https://www.google.com/' },
+    { icon: Shield, label: 'Shield', url: 'https://www.google.com/' },
+  ];
 
   // Simulate real-time latency fluctuations
   useEffect(() => {
@@ -32,11 +43,29 @@ export default function TopBar() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (toolsRef.current && !toolsRef.current.contains(event.target as Node)) {
+        setShowTools(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const formatUptime = (seconds: number) => {
     const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
     const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
     const s = (seconds % 60).toString().padStart(2, '0');
     return `${h}:${m}:${s}`;
+  };
+
+  const openTool = (url: string) => {
+    if (typeof window !== 'undefined') {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      setShowTools(false);
+    }
   };
 
   return (
@@ -93,7 +122,7 @@ export default function TopBar() {
             )}
           </button>
         ))}
-        <div className="relative ml-2">
+        <div className="relative ml-2" ref={toolsRef}>
           <button
             className="btn-cyan flex items-center gap-1.5"
             style={{ padding: '4px 10px', fontSize: 10 }}
@@ -109,36 +138,61 @@ export default function TopBar() {
             <div
               role="menu"
               aria-label="Quick tools"
-              className="absolute z-20 mt-2 p-2 rounded shadow-lg"
+              className="absolute z-20 mt-2 rounded-lg shadow-[0_12px_30px_rgba(0,0,0,0.45)]"
               style={{
                 right: 0,
-                background: 'var(--bg-panel)',
-                border: '1px solid var(--border-panel)',
-                display: 'flex',
-                gap: 8,
+                minWidth: 260,
+                background: 'rgba(10, 12, 18, 0.96)',
+                border: '1px solid rgba(96, 165, 250, 0.18)',
+                boxShadow: '0 18px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.04)',
+                backdropFilter: 'blur(12px)',
+                overflow: 'hidden',
               }}
             >
-              <a href="#" title="YouTube Music" className="p-2 rounded hover:bg-white/5">
-                <Music size={16} />
-              </a>
-              <a href="#" title="GitHub" className="p-2 rounded hover:bg-white/5">
-                <Github size={16} />
-              </a>
-              <a href="#" title="Zap" className="p-2 rounded hover:bg-white/5">
-                <Zap size={16} />
-              </a>
-              <a href="#" title="Terminal" className="p-2 rounded hover:bg-white/5">
-                <Terminal size={16} />
-              </a>
-              <a href="#" title="Code" className="p-2 rounded hover:bg-white/5">
-                <Code size={16} />
-              </a>
-              <a href="#" title="Server" className="p-2 rounded hover:bg-white/5">
-                <Server size={16} />
-              </a>
-              <a href="#" title="Shield" className="p-2 rounded hover:bg-white/5">
-                <Shield size={16} />
-              </a>
+              <div
+                className="px-3 py-2 text-[9px] font-semibold tracking-[0.22em] uppercase"
+                style={{
+                  color: 'var(--text-muted)',
+                  borderBottom: '1px solid rgba(255,255,255,0.06)',
+                  background: 'rgba(255,255,255,0.01)',
+                }}
+              >
+                Quick Access
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 p-2">
+                {quickTools.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <button
+                      key={tool.label}
+                      type="button"
+                      onClick={() => openTool(tool.url)}
+                      className="group flex items-center justify-between rounded-md border px-2.5 py-2 text-left transition-all duration-150"
+                      style={{
+                        background: 'rgba(255,255,255,0.015)',
+                        borderColor: 'rgba(255,255,255,0.06)',
+                        color: 'var(--text-primary)',
+                      }}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="flex h-7 w-7 items-center justify-center rounded-sm"
+                          style={{
+                            background: 'rgba(0, 212, 255, 0.08)',
+                            color: 'var(--accent-cyan)',
+                            border: '1px solid rgba(0, 212, 255, 0.15)',
+                          }}
+                        >
+                          <Icon size={13} />
+                        </span>
+                        <span className="text-[10px] font-medium tracking-[0.08em] uppercase">{tool.label}</span>
+                      </span>
+                      <span className="text-[9px] text-slate-400 transition-transform duration-150 group-hover:translate-x-0.5">→</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
