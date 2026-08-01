@@ -1,0 +1,17 @@
+KONTEKS KEAMANAN SIBER
+
+Keamanan siber adalah praktik melindungi sistem komputer dan jaringan dari serangan digital yang dirancang untuk mengakses, mengubah, atau menghancurkan informasi sensitif, mencuri atau memeras uang dari pengguna, atau mengganggu operasi bisnis normal.
+
+Ancaman keamanan siber meliputi:
+1. Malware - Software berbahaya yang dirancang untuk merusak atau mengakses sistem
+2. Phishing - Usaha untuk menipu pengguna agar mengungkapkan informasi sensitif
+3. Ransomware - Program yang mengenkripsi data dan menuntut pembayaran untuk membukanya
+4. DDoS Attacks - Serangan yang membanjiri server dengan lalu lintas untuk mengganggu layanan
+5. SQL Injection - Teknik menyisipkan kode berbahaya ke dalam aplikasi web
+
+Praktik terbaik untuk keamanan siber:
+- Gunakan password yang kuat dan unik
+- Aktifkan autentikasi dua faktor
+- Update software secara berkala
+- Lakukan backup data secara rutin
+- Latih karyawan tentang kesadaran keamanan
