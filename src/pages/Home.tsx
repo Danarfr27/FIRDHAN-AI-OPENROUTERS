@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, MessageSquareText, ShieldCheck, Globe, MoonStar, QrCode, ShoppingBag, KeyRound, LogOut, Trash2 } from 'lucide-react';
+import { Plus, ShieldCheck, Globe, MoonStar, QrCode, ShoppingBag, KeyRound, LogOut, Trash2 } from 'lucide-react';
 import TopBar from '../sections/TopBar';
 import SystemInfo from '../sections/SystemInfo';
 import MainConsole from '../sections/MainConsole';
@@ -52,7 +52,7 @@ export default function Home() {
 
   const menuItems = [
     { label: 'New Chat', icon: Plus, action: createNewChat },
-    { label: 'AI Check', icon: MessageSquareText, action: () => {} },
+    { label: 'AI Check', icon: ShieldCheck, action: () => {} },
     { label: 'World Monitor', icon: Globe, action: () => {} },
     { label: 'Toggle Theme', icon: MoonStar, action: () => {} },
     { label: 'QR', icon: QrCode, action: () => {} },
