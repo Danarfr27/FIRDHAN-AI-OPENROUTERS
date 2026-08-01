@@ -15,6 +15,7 @@ interface ChatSessionItem {
 
 const ACTIVE_SESSION_KEY = 'firdhan_active_chat_session';
 const CHAT_HISTORY_KEY = 'firdhan_chat_history_v1';
+const CHAT_SESSION_PREFIX = 'firdhan_chat_session_';
 
 const CCTV_URL = 'https://cctv-dishub.sukabumikab.go.id/';
 
@@ -132,6 +133,29 @@ export default function SystemInfo() {
     }
   };
 
+  const clearAllHistory = () => {
+    if (typeof window === 'undefined') return;
+
+    const confirmed = window.confirm('Hapus semua riwayat chat?');
+    if (!confirmed) return;
+
+    const storage = window.localStorage;
+    storage.removeItem(CHAT_HISTORY_KEY);
+    storage.removeItem(ACTIVE_SESSION_KEY);
+
+    Object.keys(storage)
+      .filter((key) => key.startsWith(CHAT_SESSION_PREFIX))
+      .forEach((key) => storage.removeItem(key));
+
+    storage.setItem(CHAT_HISTORY_KEY, '[]');
+    storage.setItem(ACTIVE_SESSION_KEY, '#0427');
+
+    setChatSessions([]);
+    setActiveSession('#0427');
+    window.dispatchEvent(new CustomEvent('firdhan-chat-history-updated'));
+    window.dispatchEvent(new CustomEvent('firdhan-chat-session-change', { detail: { sessionId: '#0427' } }));
+  };
+
   return (
     <div className="panel p-2.5 flex flex-col gap-2.5 animate-fade-in-up stagger-1" style={{ width: 280, minWidth: 280, height: '100%' }}>
       <div>
@@ -221,14 +245,24 @@ export default function SystemInfo() {
           >
             CHAT HISTORY
           </h3>
-          <button
-            type="button"
-            onClick={createNewChat}
-            className="btn-green px-2 py-1 text-[9px]"
-            style={{ borderRadius: 4 }}
-          >
-            NEW
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={clearAllHistory}
+              className="rounded border border-red-500/30 bg-red-500/10 px-2 py-1 text-[9px] font-semibold transition hover:bg-red-500/20"
+              style={{ color: '#ff7b7b', borderRadius: 4 }}
+            >
+              DELETE
+            </button>
+            <button
+              type="button"
+              onClick={createNewChat}
+              className="btn-green px-2 py-1 text-[9px]"
+              style={{ borderRadius: 4 }}
+            >
+              NEW
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-col gap-1.5 max-h-[220px] overflow-y-auto pr-1">

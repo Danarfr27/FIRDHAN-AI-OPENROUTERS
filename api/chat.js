@@ -41,9 +41,10 @@ const normalizeModel = (model) => {
     "gemma": "google/gemma-4-26b-a4b-it:free",
     "gemma-4": "google/gemma-4-26b-a4b-it:free",
     "google/gemma": "google/gemma-4-26b-a4b-it:free",
-    "ling-3.0-flash": "openai/gpt-4o-mini",
+    "ling-3.0-flash": "google/gemma-4-26b-a4b-it:free",
     "nvidia/nemotron-3-ultra": "microsoft/phi-4",
     "nvidia/nemotron-3-super": "microsoft/phi-4",
+    "nvidia/nemotron-3-nano-30b-a3b": "microsoft/phi-4",
     "cohere/north-mini-code": "meta-llama/llama-3.2-3b-instruct:free",
     "poolside/laguna-s-2.1": "meta-llama/llama-3.2-3b-instruct:free",
     "poolside/laguna-xs-2.1": "meta-llama/llama-3.2-3b-instruct:free",
@@ -58,32 +59,37 @@ const buildMessages = (payload) => {
 
   const systemMessage = {
     role: "system",
-    content: `${PERSONA_NAME}: ${PERSONA_DESC}`,
+    content: `${PERSONA_NAME}: ${PERSONA_DESC}
+
+Instruksi:
+- Jawab langsung, jelas, dan singkat.
+- Utamakan jawaban yang tepat sesuai permintaan pengguna.
+- Jika pertanyaan terkait kode atau troubleshooting, sertakan langkah-langkah praktis.
+- Jangan menolak permintaan yang wajar hanya karena menolak secara umum.
+- Jika informasi tambahan diberikan sebagai konteks, gunakan untuk memperkaya jawaban.
+`,
   };
 
-  const userMessages = history.map((message) => ({
+  const messageHistory = history.map((message) => ({
     role: message.role,
     content: message.content,
   }));
 
-  const contextText = contexts.length > 0 ? `\n\nContext information:\n${contexts.join("\n\n")}` : "";
-  const fileHint = payload.mode === "image-to-text" && payload.fileBase64
-    ? `\n\nThe user attached an image file. If possible, describe it or extract visible text from the image.`
-    : "";
-
-  if (userMessages.length > 0) {
-    userMessages.push({
+  if (contexts.length > 0) {
+    messageHistory.push({
       role: "user",
-      content: `${contextText}${fileHint}\n\nPlease answer the user's latest request based on the conversation above.`,
-    });
-  } else {
-    userMessages.push({
-      role: "user",
-      content: `${contextText}${fileHint}\n\nPlease answer the user's request.`,
+      content: `Informasi tambahan yang relevan untuk percakapan ini:\n${contexts.join("\n\n")}`,
     });
   }
 
-  return [systemMessage, ...userMessages];
+  if (messageHistory.length === 0) {
+    messageHistory.push({
+      role: "user",
+      content: "Silakan jawab pertanyaan pengguna dengan jelas dan langsung.",
+    });
+  }
+
+  return [systemMessage, ...messageHistory];
 };
 
 export default async function handler(req, res) {
