@@ -142,6 +142,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, []);
 
+  // If VITE_SKIP_AUTH is set to 'true', automatically sign in using the first
+  // available auth user. This allows preview deployments to show the full UI
+  // without manual login. To enable in Vercel, set `VITE_SKIP_AUTH=true` in
+  // the project Environment Variables (Production) and redeploy.
+  React.useEffect(() => {
+    try {
+      const skip = (import.meta.env as Record<string, any>).VITE_SKIP_AUTH === 'true';
+      if (!skip) return;
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) return; // don't override an existing session
+      const authUsers = getAuthUsers();
+      if (authUsers.length === 0) return;
+      const u = authUsers[0];
+      const newUser: User = { username: u.username, name: u.name || u.username };
+      setUser(newUser);
+      localStorage.setItem('user', JSON.stringify(newUser));
+      // eslint-disable-next-line no-console
+      console.info('VITE_SKIP_AUTH enabled — auto-signed in as', newUser.username);
+    } catch (err) {
+      // ignore errors during automatic sign-in
+      // eslint-disable-next-line no-console
+      console.warn('Auto sign-in skipped due to error', err);
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
