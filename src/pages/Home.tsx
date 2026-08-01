@@ -66,6 +66,17 @@ export default function Home() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('user');
+      window.location.assign('/login');
+    } else {
+      navigate('/login', { replace: true });
+    }
+    setMenuOpen(false);
+  };
+
   const menuItems = [
     { label: 'New Chat', icon: Plus, action: createNewChat },
     { label: 'AI Check', icon: ShieldCheck, action: () => openExternal('https://apicheck-liart.vercel.app/') },
@@ -74,7 +85,7 @@ export default function Home() {
     { label: 'QR', icon: QrCode, action: () => openExternal('https://qr-firdhan.vercel.app/') },
     { label: 'Shop', icon: ShoppingBag, action: () => openExternal('https://fearhackshop.vercel.app') },
     { label: 'Temp.OTP', icon: KeyRound, action: () => openExternal('https://tempmail-orpin.vercel.app/login.html') },
-    { label: 'Logout', icon: LogOut, action: () => { logout(); navigate('/login', { replace: true }); } },
+    { label: 'Logout', icon: LogOut, action: handleLogout },
     { label: 'Clear history', icon: Trash2, action: clearHistory },
   ];
 
