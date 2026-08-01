@@ -13,8 +13,8 @@ export default function App() {
         path="/login"
         element={isAuthenticated ? <Navigate to="/" /> : <LoginPage />}
       />
-      <Route path="/" element={<Home />} />
-      <Route path="/chat" element={<GeminiChat />} />
+      <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" replace />} />
+      <Route path="/chat" element={isAuthenticated ? <GeminiChat /> : <Navigate to="/login" replace />} />
     </Routes>
   )
 }

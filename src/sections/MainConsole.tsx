@@ -19,24 +19,24 @@ interface ContextItem {
 
 const sessionData: Record<string, { title: string; welcomeText: string }> = {
   '#0427': {
-    title: 'Forensic Artifact Analysis',
-    welcomeText: "Analisis Sistem Diperdalam.",
+    title: 'FIRDHAN AI // Tools V1.6',
+    welcomeText: 'Hallo bro, welcome to Tools V1.6 WORM GPT BY Firdhan. Apakah ada yang bisa saya bantu?',
   },
   '#0426': {
     title: 'Malware Analysis',
-    welcomeText: "Analisis malware dan perilaku ancaman.",
+    welcomeText: 'Analisis malware dan perilaku ancaman dengan pendekatan forensik.',
   },
   '#0425': {
     title: 'Code Review',
-    welcomeText: "Review kode dan audit keamanan.",
+    welcomeText: 'Review kode dan audit keamanan secara menyeluruh.',
   },
   '#0424': {
     title: 'Pentest Plan',
-    welcomeText: "Perencanaan penetrasi testing.",
+    welcomeText: 'Perencanaan penetrasi testing dan mitigasi risiko.',
   },
   '#0423': {
     title: 'OSINT Query',
-    welcomeText: "Open Source Intelligence gathering.",
+    welcomeText: 'Open Source Intelligence gathering untuk intelijen digital.',
   },
 };
 
