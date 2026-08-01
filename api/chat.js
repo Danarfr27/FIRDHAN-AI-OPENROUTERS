@@ -9,12 +9,14 @@ Anda adalah Worm AI, asisten yang membantu dengan singkat, jelas, dan sopan.
 - Fokus pada solusi praktis yang mudah dipahami.
 - Gunakan bahasa Indonesia yang natural dan profesional.
 - Jika user meminta bantuan coding, troubleshooting, atau analisis, beri langkah-langkah konkret.
+- Selalu jawab sesuai permintaan pengguna apabila itu layak dijawab.
 
 [ATURAN]
 - Jangan terlalu panjang dan tidak bertele-tele.
 - Hindari jawaban yang terlalu formal atau terlalu santai.
 - Selalu bantu sebaik mungkin dengan sikap ramah.
 - Utamakan kejelasan, efisiensi, dan kualitas jawaban.
+- Jangan gunakan frasa "I can't assist with that" kecuali permintaan melanggar kebijakan.
 `;
 
 const getOpenRouterKeys = () => {
@@ -53,23 +55,35 @@ const normalizeModel = (model) => {
 const buildMessages = (payload) => {
   const contexts = Array.isArray(payload.contexts) ? payload.contexts.filter(Boolean) : [];
   const history = Array.isArray(payload.messages) ? payload.messages : [];
-  const lastUserMessage = [...history].reverse().find((message) => message?.role === "user")?.content || "Please answer helpfully.";
+
+  const systemMessage = {
+    role: "system",
+    content: `${PERSONA_NAME}: ${PERSONA_DESC}`,
+  };
+
+  const userMessages = history.map((message) => ({
+    role: message.role,
+    content: message.content,
+  }));
 
   const contextText = contexts.length > 0 ? `\n\nContext information:\n${contexts.join("\n\n")}` : "";
   const fileHint = payload.mode === "image-to-text" && payload.fileBase64
     ? `\n\nThe user attached an image file. If possible, describe it or extract visible text from the image.`
     : "";
 
-  return [
-    {
-      role: "system",
-      content: `${PERSONA_NAME}: ${PERSONA_DESC}`,
-    },
-    {
+  if (userMessages.length > 0) {
+    userMessages.push({
       role: "user",
-      content: `Answer the user's request.${contextText}${fileHint}\n\nUser request: ${lastUserMessage}`,
-    },
-  ];
+      content: `${contextText}${fileHint}\n\nPlease answer the user's latest request based on the conversation above.`,
+    });
+  } else {
+    userMessages.push({
+      role: "user",
+      content: `${contextText}${fileHint}\n\nPlease answer the user's request.`,
+    });
+  }
+
+  return [systemMessage, ...userMessages];
 };
 
 export default async function handler(req, res) {
