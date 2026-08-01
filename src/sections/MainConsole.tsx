@@ -182,6 +182,7 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
     if (typeof window === 'undefined') return activeSession || '#0427';
     return window.localStorage.getItem(ACTIVE_SESSION_KEY) || activeSession || '#0427';
   });
+  const [autoScroll, setAutoScroll] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -375,10 +376,31 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
   }, []);
 
   useEffect(() => {
-    if (scrollRef.current) {
+    if (scrollRef.current && autoScroll) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [activeSessionId, conversationMessages, isLoading]);
+  }, [activeSessionId, conversationMessages, isLoading, autoScroll]);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+      // If scrolled more than 100px from bottom, disable auto-scroll
+      if (distanceFromBottom > 100) {
+        setAutoScroll(false);
+      } else {
+        // If scrolled within 100px of bottom, enable auto-scroll
+        setAutoScroll(true);
+      }
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -398,6 +420,11 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
           <span className="font-mono text-[11px] font-semibold" style={{ color: 'var(--accent-green)' }}>
             {session.title || 'FIRDHAN AI'}
           </span>
+          {!autoScroll && (
+            <span className="ml-2 px-2 py-1 rounded text-[9px] font-mono" style={{ background: 'rgba(255, 200, 0, 0.15)', color: '#ffc800', border: '1px solid rgba(255, 200, 0, 0.3)' }}>
+              ⚠ SCROLL LOCKED
+            </span>
+          )}
         </div>
 
         <button
@@ -527,6 +554,24 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
           className="hidden"
           disabled={isProcessingFile}
         />
+
+        {!autoScroll && (
+          <div className="mb-2 px-2.5 py-1.5 text-center bg-yellow-500/10 border border-yellow-500/30 rounded-md">
+            <button
+              type="button"
+              onClick={() => {
+                setAutoScroll(true);
+                if (scrollRef.current) {
+                  scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+                }
+              }}
+              className="font-mono text-xs font-semibold transition-colors hover:text-yellow-300"
+              style={{ color: '#ffc800' }}
+            >
+              ↓ SCROLL TO LATEST
+            </button>
+          </div>
+        )}
 
         <div className="panel-inner flex items-end gap-2 px-2.5 py-2" style={{ minHeight: 56 }}>
           <textarea
