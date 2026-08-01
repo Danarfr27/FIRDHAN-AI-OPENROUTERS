@@ -50,14 +50,25 @@ export default function Home() {
     window.dispatchEvent(new CustomEvent('firdhan-chat-history-updated'));
   };
 
+  const hackerThemeLoginAlert = () => {
+    if (typeof window === 'undefined') return;
+    window.alert('Theme locked: hacker mode active. Please log in to continue.');
+  };
+
+  const openExternal = (url: string) => {
+    if (typeof window !== 'undefined') {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   const menuItems = [
     { label: 'New Chat', icon: Plus, action: createNewChat },
-    { label: 'AI Check', icon: ShieldCheck, action: () => {} },
-    { label: 'World Monitor', icon: Globe, action: () => {} },
-    { label: 'Toggle Theme', icon: MoonStar, action: () => {} },
-    { label: 'QR', icon: QrCode, action: () => {} },
-    { label: 'Shop', icon: ShoppingBag, action: () => {} },
-    { label: 'Temp.OTP', icon: KeyRound, action: () => {} },
+    { label: 'AI Check', icon: ShieldCheck, action: () => openExternal('https://apicheck-liart.vercel.app/') },
+    { label: 'World Monitor', icon: Globe, action: () => openExternal('https://cacingbesaralaska.vercel.app/') },
+    { label: 'Toggle Theme', icon: MoonStar, action: hackerThemeLoginAlert },
+    { label: 'QR', icon: QrCode, action: () => openExternal('https://qr-firdhan.vercel.app/') },
+    { label: 'Shop', icon: ShoppingBag, action: () => openExternal('https://fearhackshop.vercel.app') },
+    { label: 'Temp.OTP', icon: KeyRound, action: () => openExternal('https://tempmail-orpin.vercel.app/login.html') },
     { label: 'Logout', icon: LogOut, action: () => {} },
     { label: 'Clear history', icon: Trash2, action: clearHistory },
   ];
