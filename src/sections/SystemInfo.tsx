@@ -6,12 +6,6 @@ import {
   YAxis,
 } from 'recharts';
 
-interface VramItem {
-  name: string;
-  value: number;
-  max: string;
-}
-
 interface ChatSessionItem {
   id: string;
   title: string;
@@ -22,12 +16,7 @@ interface ChatSessionItem {
 const ACTIVE_SESSION_KEY = 'firdhan_active_chat_session';
 const CHAT_HISTORY_KEY = 'firdhan_chat_history_v1';
 
-const vramData: VramItem[] = [
-  { name: 'Opus 4.7 (Active)', value: 85, max: '24GB' },
-  { name: 'Deepseek', value: 60, max: '18GB' },
-  { name: 'GPT-4', value: 70, max: '20GB' },
-  { name: 'Llama 3 70B', value: 55, max: '16GB' },
-];
+const CCTV_URL = 'https://cctv-dishub.sukabumikab.go.id/';
 
 const readChatHistory = (): ChatSessionItem[] => {
   if (typeof window === 'undefined') return [];
@@ -146,41 +135,46 @@ export default function SystemInfo() {
   return (
     <div className="panel p-2.5 flex flex-col gap-2.5 animate-fade-in-up stagger-1" style={{ width: 280, minWidth: 280, height: '100%' }}>
       <div>
-        <h3
-          className="font-mono text-[11px] font-semibold tracking-widest mb-2"
-          style={{ color: 'var(--text-primary)' }}
-        >
-          VRAM ALLOCATION
-        </h3>
-        <div className="flex flex-col gap-2">
-          {vramData.map((item) => (
-            <div key={item.name} className="flex items-center gap-2">
-              <span
-                className="font-mono text-[11px] w-[110px] shrink-0 truncate"
-                style={{ color: 'var(--text-secondary)' }}
-              >
-                {item.name}
-              </span>
-              <div
-                className="flex-1 h-2 rounded-full overflow-hidden"
-                style={{ background: '#1a1a2e' }}
-              >
-                <div
-                  className="h-full rounded-full transition-all duration-500"
-                  style={{
-                    width: `${item.value}%`,
-                    background: 'linear-gradient(90deg, var(--accent-green), var(--accent-green-dim))',
-                  }}
-                />
-              </div>
-              <span
-                className="font-mono text-[10px] w-8 text-right shrink-0"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                {item.max}
-              </span>
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <h3
+            className="font-mono text-[11px] font-semibold tracking-widest"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            CCTV SUKABUMI
+          </h3>
+          <a
+            href={CCTV_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-green px-2 py-1 text-[9px]"
+            style={{ borderRadius: 4 }}
+          >
+            OPEN
+          </a>
+        </div>
+
+        <div className="panel-inner overflow-hidden" style={{ height: 170 }}>
+          <div className="flex h-full w-full flex-col items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(0,212,255,0.16),_transparent_60%)] px-3 py-3 text-center" style={{ color: 'var(--text-primary)' }}>
+            <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: 'var(--accent-cyan)' }}>
+              LIVE FEED
             </div>
-          ))}
+            <div className="mb-3 text-[11px] font-medium" style={{ color: 'var(--text-secondary)' }}>
+              CCTV Sukabumi public portal
+            </div>
+            <a
+              href={CCTV_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md border border-[#00d4ff]/25 bg-[#00d4ff]/10 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#00d4ff]/20"
+              style={{ color: 'var(--accent-cyan)' }}
+            >
+              Buka Stream
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-1 text-[10px]" style={{ color: 'var(--text-muted)' }}>
+          Menggunakan link resmi • buka di tab baru agar tidak terhalang blokir embed
         </div>
       </div>
 
