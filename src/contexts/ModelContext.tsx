@@ -15,7 +15,7 @@ interface ModelContextType {
   availableModels: { id: OpenRouterModel; name: string; description: string }[];
 }
 
-const defaultModel: OpenRouterModel = "ling-3.0-flash";
+const defaultModel: OpenRouterModel = "cohere/north-mini-code";
 
 const getDefaultModel = (): OpenRouterModel => {
   const envModel = import.meta.env.VITE_DEFAULT_MODEL as string | undefined;
