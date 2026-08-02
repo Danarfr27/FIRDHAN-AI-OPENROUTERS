@@ -33,7 +33,7 @@ const getSiteUrl = () => {
 
 const normalizeModel = (model) => {
   const value = model?.toString().trim();
-  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "cohere/north-mini-code";
+  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "meta-llama/llama-3.2-3b-instruct:free";
 
   const aliases = {
     "ling-3.0-flash": "google/gemma-4-26b-a4b-it:free",
