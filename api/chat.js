@@ -33,14 +33,22 @@ const getSiteUrl = () => {
   return "http://127.0.0.1:3000";
 };
 
+const SUPPORTED_MODELS = new Set([
+  "nvidia/nemotron-3-ultra",
+  "nvidia/nemotron-3-super",
+  "cohere/north-mini-code",
+  "poolside/laguna-s-2.1",
+  "poolside/laguna-xs-2.1",
+  "nvidia/nemotron-3-nano-30b-a3b",
+]);
+
 const normalizeModel = (model) => {
-  // Keep model selection transparent: prefer explicit model from payload,
-  // otherwise fall back to env or a conservative default chosen for
-  // low hallucination and reasonable latency. We avoid forced aliasing
-  // to other provider-specific names so the user's selection is respected.
   const value = model?.toString().trim();
-  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "nvidia/nemotron-3-ultra";
-  return preferred;
+  const envModel = process.env.OPENROUTER_MODEL?.toString().trim();
+  const defaultModel = process.env.VITE_DEFAULT_MODEL?.toString().trim() || "nvidia/nemotron-3-ultra";
+  const preferred = value || envModel || defaultModel;
+
+  return SUPPORTED_MODELS.has(preferred) ? preferred : defaultModel;
 };
 
 const buildMessages = (payload) => {
