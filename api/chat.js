@@ -39,7 +39,7 @@ const normalizeModel = (model) => {
   // low hallucination and reasonable latency. We avoid forced aliasing
   // to other provider-specific names so the user's selection is respected.
   const value = model?.toString().trim();
-  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "microsoft/phi-4";
+  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "ling-3.0-flash";
   return preferred;
 };
 
