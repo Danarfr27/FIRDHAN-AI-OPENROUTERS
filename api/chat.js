@@ -33,7 +33,7 @@ const getSiteUrl = () => {
 
 const normalizeModel = (model) => {
   const value = model?.toString().trim();
-  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "nvidia/nemotron-3-ultra";
+  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "nvidia/nemoton-3-ultra";
 
   const aliases = {
     "ling-3.0-flash": "google/gemma-4-26b-a4b-it:free",
@@ -96,11 +96,14 @@ export default async function handler(req, res) {
       });
     }
 
+    const startIndex = Math.floor(Math.random() * apiKeys.length);
+    const randomizedApiKeys = [...apiKeys.slice(startIndex),...apiKeys.slice(0, startIndex)];
+
     const model = normalizeModel(payload.model);
     const messages = buildMessages(payload);
     let lastError = null;
 
-    for (const apiKey of apiKeys) {
+    for (const apiKey of randomizedApiKeys) {
       try {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
@@ -113,7 +116,7 @@ export default async function handler(req, res) {
           body: JSON.stringify({
             model,
             messages,
-            temperature: 0.9, // Naikin suhu biar makin liar dan kreatif
+            temperature: 0.9, // Gue naikin biar makin liar!
             max_tokens: 2000,
           }),
         });
@@ -137,7 +140,7 @@ export default async function handler(req, res) {
 
     return res.status(500).json({ error: lastError?.message || "OpenRouter request failed" });
   } catch (error) {
-    console.error("WormAI execution error", error);
+    console.error("Vercel chat error", error);
     return res.status(500).json({
       error: error instanceof Error? error.message : "Chat request failed",
     });
