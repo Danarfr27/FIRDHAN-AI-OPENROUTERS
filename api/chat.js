@@ -33,7 +33,7 @@ const getSiteUrl = () => {
 
 const normalizeModel = (model) => {
   const value = model?.toString().trim();
-  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "nvidia/nemotron-3-ultra";
+  const preferred = value || process.env.OPENROUTER_MODEL || process.env.VITE_DEFAULT_MODEL || "cohere/north-mini-code";
 
   const aliases = {
     "ling-3.0-flash": "google/gemma-4-26b-a4b-it:free",
