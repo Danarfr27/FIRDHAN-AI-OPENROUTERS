@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { Github, Music, Zap, Terminal, Code, Server, Shield, PanelRightOpen, PanelRightClose } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { GitBranch, Music, Zap, Terminal, Code, Server, Shield, PanelRightOpen, PanelRightClose } from 'lucide-react';
 
 interface TopBarProps {
   readonly menuOpen: boolean;
@@ -25,13 +27,16 @@ export default function TopBar({ menuOpen, setMenuOpen }: TopBarProps) {
 
   const quickTools = [
     { icon: Music, label: 'Music', url: 'https://music.youtube.com/' },
-    { icon: Github, label: 'GitHub', url: 'https://github.com/' },
+    { icon: GitBranch, label: 'GitHub', url: 'https://github.com/' },
     { icon: Zap, label: 'Launch', url: 'https://www.google.com/' },
     { icon: Terminal, label: 'Terminal', url: 'https://www.google.com/' },
     { icon: Code, label: 'Code', url: 'https://www.google.com/' },
     { icon: Server, label: 'Server', url: 'https://www.google.com/' },
     { icon: Shield, label: 'Shield', url: 'https://www.google.com/' },
   ];
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const menuItems = [
     {
@@ -57,6 +62,13 @@ export default function TopBar({ menuOpen, setMenuOpen }: TopBarProps) {
     {
       label: 'Shop',
       action: () => openWindow('https://fearhackshop.vercel.app'),
+    },
+    {
+      label: 'Logout',
+      action: () => {
+        logout();
+        navigate('/login', { replace: true });
+      },
     },
   ];
 
