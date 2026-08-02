@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { GitBranch, Music, Zap, Terminal, Code, Server, Shield, PanelRightOpen, PanelRightClose } from 'lucide-react';
+import LanguageSelector from '@/components/LanguageSelector';
 
 interface TopBarProps {
   readonly menuOpen: boolean;
@@ -335,6 +336,8 @@ export default function TopBar({ menuOpen, setMenuOpen }: TopBarProps) {
             </div>
           )}
         </div>
+
+        <LanguageSelector />
 
         <div className="text-right">
           <div className="font-mono text-[10px] font-semibold uppercase" style={{ color: 'var(--text-secondary)' }}>

@@ -306,6 +306,7 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
         mode: 'chat' as const,
         contexts: contexts.map((c) => c.content),
         messages: nextMessages.map((m) => ({ role: m.role, content: m.content })),
+        language: typeof window !== 'undefined' ? (window.localStorage.getItem('preferred_language') || 'id') : 'id',
       };
 
       const response = await fetch('/api/chat', {

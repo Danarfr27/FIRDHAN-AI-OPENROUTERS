@@ -20,8 +20,8 @@ const defaultModel: OpenRouterModel = "ling-3.0-flash";
 const getDefaultModel = (): OpenRouterModel => {
   const envModel = import.meta.env.VITE_DEFAULT_MODEL as string | undefined;
   const validModels: OpenRouterModel[] = [
-    "nvidia/nemotron-3-ultra",
     "ling-3.0-flash",
+    "nvidia/nemotron-3-ultra",
     "nvidia/nemotron-3-super",
     "cohere/north-mini-code",
     "poolside/laguna-s-2.1",
@@ -42,14 +42,14 @@ export const ModelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const availableModels = [
     {
+      id: "ling-3.0-flash" as OpenRouterModel,
+      name: "Ling 3.0 Flash",
+      description: "Cepat dan akurat: model terbaik untuk chatbot sejarah yang responsif",
+    },
+    {
       id: "nvidia/nemotron-3-ultra" as OpenRouterModel,
       name: "NVIDIA Nemotron 3 Ultra",
       description: "Free high-performance open router model for advanced tasks",
-    },
-    {
-      id: "ling-3.0-flash" as OpenRouterModel,
-      name: "Ling 3.0 Flash",
-      description: "Free 5.1B Mixture-of-Experts model optimized for speed and accuracy",
     },
     {
       id: "nvidia/nemotron-3-super" as OpenRouterModel,
