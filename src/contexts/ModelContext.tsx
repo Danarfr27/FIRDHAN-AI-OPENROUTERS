@@ -1,13 +1,8 @@
 import React, { createContext, useState, useContext, type ReactNode } from "react";
 
 export type OpenRouterModel =
-  | "nvidia/nemotron-3-ultra"
-  | "ling-3.0-flash"
-  | "nvidia/nemotron-3-super"
-  | "cohere/north-mini-code"
   | "poolside/laguna-s-2.1"
-  | "poolside/laguna-xs-2.1"
-  | "nvidia/nemotron-3-nano-30b-a3b";
+  | "poolside/laguna-xs-2.1";
 
 interface ModelContextType {
   selectedModel: OpenRouterModel;
@@ -15,17 +10,13 @@ interface ModelContextType {
   availableModels: { id: OpenRouterModel; name: string; description: string }[];
 }
 
-const defaultModel: OpenRouterModel = "nvidia/nemotron-3-ultra";
+const defaultModel: OpenRouterModel = "poolside/laguna-s-2.1";
 
 const getDefaultModel = (): OpenRouterModel => {
   const envModel = import.meta.env.VITE_DEFAULT_MODEL as string | undefined;
   const validModels: OpenRouterModel[] = [
-    "nvidia/nemotron-3-ultra",
-    "nvidia/nemotron-3-super",
-    "cohere/north-mini-code",
     "poolside/laguna-s-2.1",
     "poolside/laguna-xs-2.1",
-    "nvidia/nemotron-3-nano-30b-a3b",
   ];
 
   if (envModel && validModels.includes(envModel as OpenRouterModel)) {
@@ -41,39 +32,14 @@ export const ModelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const availableModels = [
     {
-      id: "nvidia/nemotron-3-ultra" as OpenRouterModel,
-      name: "NVIDIA Nemotron 3 Ultra",
-      description: "Model default yang cepat dan stabil pada OpenRouter untuk penggunaan umum.",
-    },
-    {
-      id: "nvidia/nemotron-3-super" as OpenRouterModel,
-      name: "NVIDIA Nemotron 3 Super",
-      description: "Free high-efficiency hybrid model for general purpose use",
-    },
-    {
-      id: "nvidia/nemotron-3-super" as OpenRouterModel,
-      name: "NVIDIA Nemotron 3 Super",
-      description: "Free high-efficiency hybrid model for general purpose use",
-    },
-    {
-      id: "cohere/north-mini-code" as OpenRouterModel,
-      name: "Cohere North Mini Code",
-      description: "Free code-focused model for programming and technical prompts",
-    },
-    {
       id: "poolside/laguna-s-2.1" as OpenRouterModel,
       name: "Poolside Laguna S 2.1",
-      description: "Free agent model for code and reasoning workflows",
+      description: "Model valid dan tersedia untuk OpenRouter; cepat dan stabil.",
     },
     {
       id: "poolside/laguna-xs-2.1" as OpenRouterModel,
       name: "Poolside Laguna XS 2.1",
-      description: "Free fast model with efficient token usage",
-    },
-    {
-      id: "nvidia/nemotron-3-nano-30b-a3b" as OpenRouterModel,
-      name: "NVIDIA Nemotron 3 Nano 30B A3B",
-      description: "Free compact 30B model for low-latency tasks",
+      description: "Model cepat, ringan, dan tersedia di OpenRouter.",
     },
   ];
 

@@ -1,9 +1,3 @@
-// Persona is read from environment variables when deployed (Vercel):
-// PERSONA_NAME, PERSONA_DESC, PERSONA, OPENROUTER_MODEL, SITE_URL
-// Default persona: a scholarly historian that focuses on human history,
-// technological development from the Stone Age to modern time, and
-// historical diseases and medical context. Responses should be in Bahasa Indonesia,
-// factual, and avoid speculation; when uncertain, state the uncertainty.
 const PERSONA_NAME = process.env.PERSONA_NAME || process.env.PERSONA || 'Sejarawan-AI';
 const PERSONA_DESC = process.env.PERSONA_DESC || process.env.PERSONA_TEXT || `
 Anda adalah Sejarawan-AI, seorang narator dan pengamat sejarah yang terlatih: menjelaskan perkembangan peradaban manusia sejak zaman prasejarah, evolusi teknologi dari Zaman Batu hingga era modern, dan sejarah penyakit serta pengobatannya sepanjang waktu.
@@ -34,18 +28,14 @@ const getSiteUrl = () => {
 };
 
 const SUPPORTED_MODELS = new Set([
-  "nvidia/nemotron-3-ultra",
-  "nvidia/nemotron-3-super",
-  "cohere/north-mini-code",
   "poolside/laguna-s-2.1",
   "poolside/laguna-xs-2.1",
-  "nvidia/nemotron-3-nano-30b-a3b",
 ]);
 
 const normalizeModel = (model) => {
   const value = model?.toString().trim();
   const envModel = process.env.OPENROUTER_MODEL?.toString().trim();
-  const defaultModel = process.env.VITE_DEFAULT_MODEL?.toString().trim() || "nvidia/nemotron-3-ultra";
+  const defaultModel = process.env.VITE_DEFAULT_MODEL?.toString().trim() || "poolside/laguna-s-2.1";
   const preferred = value || envModel || defaultModel;
 
   return SUPPORTED_MODELS.has(preferred) ? preferred : defaultModel;
