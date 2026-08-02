@@ -15,7 +15,7 @@ interface ModelContextType {
   availableModels: { id: OpenRouterModel; name: string; description: string }[];
 }
 
-const defaultModel: OpenRouterModel = "meta-llama/llama-3.2-3b-instruct:free";
+const defaultModel: OpenRouterModel = "nvidia/nemotron-3-ultra";
 
 const getDefaultModel = (): OpenRouterModel => {
   const envModel = import.meta.env.VITE_DEFAULT_MODEL as string | undefined;
