@@ -402,13 +402,6 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
-    }
-  }, [inputValue]);
-
   return (
     <div
       className="panel flex flex-col relative animate-fade-in-up stagger-2 min-h-0"
@@ -580,9 +573,9 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleSubmitFromKeyboard}
             placeholder="Masukkan perintah, seret file, atau tempel kode..."
-            rows={1}
-            className="flex-1 bg-transparent border-none outline-none resize-none overflow-hidden font-mono text-[13px] leading-5"
-            style={{ color: 'var(--text-primary)', maxHeight: 120 }}
+            rows={4}
+            className="flex-1 bg-transparent border-none outline-none resize-none overflow-y-auto font-mono text-[13px] leading-5"
+            style={{ color: 'var(--text-primary)', height: 120, maxHeight: 120 }}
             disabled={isLoading}
           />
 
