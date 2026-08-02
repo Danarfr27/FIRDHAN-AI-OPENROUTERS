@@ -114,13 +114,15 @@ export const LoginPage = () => {
             <CardContent className="px-6 pb-6 pt-5 md:px-8">
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#ffcf9f]">
-                    Username
+                  <Label htmlFor="user_email" className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#ffcf9f]">
+                    Email
                   </Label>
                   <Input
-                    id="username"
+                    id="user_email"
+                    name="email"
                     type="text"
-                    placeholder="type your username"
+                    autoComplete="email"
+                    placeholder="type your email"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     disabled={isLoading}
