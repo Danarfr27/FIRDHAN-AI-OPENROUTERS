@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, type ReactNode } from "react";
 
 export type OpenRouterModel =
-  | "google/gemma-4-31b-it";
+  | "google/gemma-4-26b-a4b-it:free";
 
 interface ModelContextType {
   selectedModel: OpenRouterModel;
@@ -9,12 +9,12 @@ interface ModelContextType {
   availableModels: { id: OpenRouterModel; name: string; description: string }[];
 }
 
-const defaultModel: OpenRouterModel = "google/gemma-4-31b-it";
+const defaultModel: OpenRouterModel = "google/gemma-4-26b-a4b-it:free";
 
 const getDefaultModel = (): OpenRouterModel => {
   const envModel = import.meta.env.VITE_DEFAULT_MODEL as string | undefined;
   const validModels: OpenRouterModel[] = [
-    "google/gemma-4-31b-it",
+    "google/gemma-4-26b-a4b-it:free",
   ];
 
   if (envModel && validModels.includes(envModel as OpenRouterModel)) {
@@ -30,8 +30,8 @@ export const ModelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const availableModels = [
     {
-      id: "google/gemma-4-31b-it" as OpenRouterModel,
-      name: "Google Gemma 4 31B IT",
+      id: "google/gemma-4-26b-a4b-it:free" as OpenRouterModel,
+      name: "Google Gemma 4 26B A4B IT",
       description: "Model instruksi untuk analisis dan pengujian keamanan.",
     },
   ];

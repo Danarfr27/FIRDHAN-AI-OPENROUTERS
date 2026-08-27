@@ -13,13 +13,13 @@ const getSiteUrl = () => {
 };
 
 const SUPPORTED_MODELS = new Set([
-  "google/gemma-4-31b-it",
+  "google/gemma-4-26b-a4b-it:free",
 ]);
 
 const normalizeModel = (model) => {
   const value = model?.toString().trim();
   const envModel = process.env.OPENROUTER_MODEL?.toString().trim();
-  const defaultModel = "google/gemma-4-31b-it";
+  const defaultModel = "google/gemma-4-26b-a4b-it:free";
   const preferred = value || envModel || defaultModel;
 
   return SUPPORTED_MODELS.has(preferred) ? preferred : defaultModel;

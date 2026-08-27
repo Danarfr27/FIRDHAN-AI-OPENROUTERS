@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI, type Content } from "@google/generative-ai";
 
-export type GeminiModel = "google/gemma-4-31b-it";
+export type GeminiModel = "google/gemma-4-26b-a4b-it:free";
 
 // Support multiple API keys via VITE_GEMINI_API_KEYS (JSON array or comma-separated)
 const rawKeys = import.meta.env.VITE_GEMINI_API_KEYS ?? import.meta.env.VITE_GEMINI_API_KEY;
@@ -42,7 +42,7 @@ export interface GeminiMessage {
 }
 
 export class GeminiService {
-  private currentModel: GeminiModel = "google/gemma-4-31b-it";
+  private currentModel: GeminiModel = "google/gemma-4-26b-a4b-it:free";
   private clientIndex = 0;
 
   private getClient() {
