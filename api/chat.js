@@ -131,7 +131,9 @@ export default async function handler(req, res) {
         const data = await response.json().catch(() => null);
 
         if (!response.ok) {
-          throw new Error(data?.error?.message || data?.message || `OpenRouter request failed with ${response.status}`);
+          const providerMessage = data?.error?.message || data?.message || `OpenRouter request failed with ${response.status}`;
+          const providerCode = data?.error?.code ? ` (${data.error.code})` : "";
+          throw new Error(`OpenRouter provider error${providerCode}: ${providerMessage}`);
         }
 
         const text = data?.choices?.[0]?.message?.content || "";
@@ -145,7 +147,7 @@ export default async function handler(req, res) {
       }
     }
 
-    return res.status(500).json({ error: lastError?.message || "OpenRouter request failed" });
+    return res.status(502).json({ error: lastError?.message || "OpenRouter request failed" });
   } catch (error) {
     console.error("Vercel chat error", error);
     return res.status(500).json({
