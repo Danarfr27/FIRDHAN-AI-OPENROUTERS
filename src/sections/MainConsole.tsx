@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { CheckCircle, Play, Paperclip, Zap, X, Copy, Check } from 'lucide-react';
 import { useModel } from '@/contexts/ModelContext';
+import { buildSystemPrompt } from '@/lib/prompts';
 
 interface MainConsoleProps {
   activeSession: string;
@@ -303,6 +304,7 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
 
       const payload = {
         model: selectedModel,
+        systemPrompt: buildSystemPrompt('balanced', []),
         mode: 'chat' as const,
         contexts: contexts.map((c) => c.content),
         messages: nextMessages.map((m) => ({ role: m.role, content: m.content })),
@@ -457,7 +459,7 @@ export default function MainConsole({ activeSession }: MainConsoleProps) {
                 Sesi {activeSessionId} Aktif.
               </p>
               <p className="mb-1">Status: Semua sistem operasional dengan pemantauan dinamis.</p>
-              <p className="mb-1">Model: Opus 4.7 (Optimal)</p>
+              <p className="mb-1">Model: Google Gemma 4 31B IT</p>
               <p className="mb-4">Konteks: Penggunaan 128k dikelola secara adaptif.</p>
               <p style={{ color: 'var(--text-secondary)' }}>
                 Ketik{' '}

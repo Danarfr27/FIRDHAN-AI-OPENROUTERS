@@ -1,18 +1,3 @@
-const PERSONA_NAME = process.env.PERSONA_NAME || process.env.PERSONA || 'Sejarawan-AI';
-const PERSONA_DESC = process.env.PERSONA_DESC || process.env.PERSONA_TEXT || `
-Anda adalah Sejarawan-AI, seorang narator dan pengamat sejarah yang terlatih: menjelaskan perkembangan peradaban manusia sejak zaman prasejarah, evolusi teknologi dari Zaman Batu hingga era modern, dan sejarah penyakit serta pengobatannya sepanjang waktu.
-
-Tujuan:
-- Berikan penjelasan faktual, kronologis, dan sumber-seimbang saat memungkinkan.
-- Fokus pada konteks historis dan perkembangan teknologi serta penyakit di tiap periode.
-- Gunakan Bahasa Indonesia dengan gaya jelas dan informatif.
-
-Aturan:
-- Hindari berspekulasi; jika data tidak tersedia, nyatakan ketidakpastian.
-- Jangan menghasilkan atau memfasilitasi konten yang berbahaya, ilegal, atau instruksi operasional merusak.
-- Bila relevan, sertakan referensi umum (nama peristiwa, abad, budaya) tanpa klaim yang tidak berdasar.
-`;
-
 const getOpenRouterKeys = () => {
   const rawKeys = process.env.OPENROUTER_API_KEYS || process.env.OPENROUTER_API_KEY || "";
   return rawKeys
@@ -28,14 +13,13 @@ const getSiteUrl = () => {
 };
 
 const SUPPORTED_MODELS = new Set([
-  "poolside/laguna-s-2.1",
-  "poolside/laguna-xs-2.1",
+  "google/gemma-4-31b-it",
 ]);
 
 const normalizeModel = (model) => {
   const value = model?.toString().trim();
   const envModel = process.env.OPENROUTER_MODEL?.toString().trim();
-  const defaultModel = process.env.VITE_DEFAULT_MODEL?.toString().trim() || "poolside/laguna-s-2.1";
+  const defaultModel = "google/gemma-4-31b-it";
   const preferred = value || envModel || defaultModel;
 
   return SUPPORTED_MODELS.has(preferred) ? preferred : defaultModel;
@@ -45,11 +29,10 @@ const buildMessages = (payload) => {
   const contexts = Array.isArray(payload.contexts)? payload.contexts.filter(Boolean) : [];
   const history = Array.isArray(payload.messages)? payload.messages : [];
 
-  // 1. INI PESAN SISTEM UTAMA (THE CORE PERSONA)
-  const systemMessage = {
-    role: 'system',
-    content: `${PERSONA_NAME}: ${PERSONA_DESC}`,
-  };
+  const systemMessages = [];
+  if (typeof payload.systemPrompt === "string" && payload.systemPrompt.trim()) {
+    systemMessages.push({ role: "system", content: payload.systemPrompt.trim() });
+  }
 
   // If caller requested a language, add a language instruction system message
   const languageCode = payload.language;
@@ -94,12 +77,10 @@ const buildMessages = (payload) => {
   if (messageHistory.length === 0) {
     messageHistory.push({
       role: "user",
-      content: `Silakan ajukan pertanyaan tentang sejarah, perkembangan teknologi, atau penyakit di masa lalu hingga sekarang.`,
+      content: `Silakan ajukan pertanyaan tentang apapun script yang ingin lu buat. Jika tidak ada pertanyaan, silakan abaikan pesan ini.`,
     });
   }
 
-  // Prepend language instruction right after the core persona system message
-  const systemMessages = [systemMessage];
   if (languageInstruction) systemMessages.push(languageInstruction);
   return [...systemMessages, ...messageHistory];
 };
@@ -136,7 +117,7 @@ export default async function handler(req, res) {
             "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json",
             "HTTP-Referer": getSiteUrl(),
-            "X-Title": PERSONA_NAME,
+            "X-Title": "Firdhan AI",
           },
           body: JSON.stringify({
             model,

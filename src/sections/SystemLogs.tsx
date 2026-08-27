@@ -49,14 +49,14 @@ const initialLogs: LogEntry[] = [
     timestamp: '14:22:03',
     tag: 'SYSTEM',
     tagColor: '#00ff88',
-    message: 'Alokasi VRAM dinamis untuk Opus 4.7 diperbarui: 24GB.',
+    message: 'Konfigurasi Google Gemma 4 31B IT diperbarui.',
   },
   {
     id: 7,
     timestamp: '14:22:01',
     tag: 'GPU',
     tagColor: '#00ff88',
-    message: 'Alokasi VRAM dinamis untuk Opus 4.7 diperbarui: 24GB.',
+    message: 'Konfigurasi Google Gemma 4 31B IT diperbarui.',
   },
 ];
 

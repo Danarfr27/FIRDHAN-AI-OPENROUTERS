@@ -194,7 +194,7 @@ export const GeminiChat = () => {
     <div className="w-full h-screen flex flex-col">
       <div className="border-b bg-white p-4 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Nemotron-3 Chat</h1>
+          <h1 className="text-2xl font-bold">Gemma 4 31B IT Chat</h1>
           <p className="text-sm text-muted-foreground">Welcome, {user?.name}</p>
         </div>
         <Button variant="outline" onClick={logout}>

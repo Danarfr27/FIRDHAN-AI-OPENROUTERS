@@ -1,0 +1,1 @@
+export type ResponseStyle = "concise" | "balanced" | "detailed";

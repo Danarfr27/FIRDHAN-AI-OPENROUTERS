@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { useModel } from "@/contexts/ModelContext";
 import { BACKEND_ENDPOINT } from "../../js/config.js";
+import { buildSystemPrompt } from "@/lib/prompts";
 
 interface Message {
   role: "user" | "assistant";
@@ -12,6 +13,7 @@ interface Message {
 
 interface ChatPayload {
   model: string;
+  systemPrompt: string;
   mode: "chat" | "image-to-text";
   contexts: string[];
   messages: Array<{ role: string; content: string }>;
@@ -175,6 +177,7 @@ export const useGemini = () => {
 
       const payload: ChatPayload = {
         model: selectedModel,
+        systemPrompt: buildSystemPrompt("balanced", []),
         mode,
         contexts,
         messages: updatedMessages.map((msg) => ({ role: msg.role, content: msg.content })),
@@ -211,6 +214,7 @@ export const useGemini = () => {
       const result = await makeRequest(() =>
         sendChatRequest({
           model: selectedModel,
+          systemPrompt: buildSystemPrompt("balanced", []),
           mode: "image-to-text",
           contexts,
           messages: [{ role: "user", content: "Extract text from the attached image." }],

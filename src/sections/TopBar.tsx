@@ -11,16 +11,11 @@ interface TopBarProps {
 }
 
 const models = [
-  { name: 'Nemotron 3 Ultra', active: true },
-  { name: 'Nemotron 3 Nano', active: false },
-  { name: 'Ling 3.0 Flash', active: false },
-  { name: 'Nemotron 3 Super', active: false },
-  { name: 'North Mini Code', active: false },
-  { name: 'Laguna S 2.1', active: false, isNew: true },
+  { name: 'Google Gemma 4 31B IT', active: true },
 ];
 
 export default function TopBar({ menuOpen, setMenuOpen }: TopBarProps) {
-  const [activeModel, setActiveModel] = useState('Nemotron 3 Ultra');
+  const [activeModel, setActiveModel] = useState('Google Gemma 4 31B IT');
   const [showTools, setShowTools] = useState(false);
   const [dateTime, setDateTime] = useState(new Date());
   const toolsRef = useRef<HTMLDivElement | null>(null);
@@ -187,14 +182,7 @@ export default function TopBar({ menuOpen, setMenuOpen }: TopBarProps) {
             }}
           >
             {model.name}
-            {model.isNew && (
-              <span
-                className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
-                style={{ background: 'var(--danger)', color: 'white' }}
-              >
-                NEW
-              </span>
-            )}
+                {/* Removed isNew property rendering */}
           </button>
         ))}
       </div>

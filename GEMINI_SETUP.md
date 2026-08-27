@@ -20,8 +20,8 @@ VITE_GEMINI_API_KEY=your_actual_api_key_here
 # Format: [{"email":"user@example.com","password":"pass123","name":"User Name"}]
 VITE_AUTH_USERS=[{"email":"demo@example.com","password":"demo1234","name":"Demo User"},{"email":"admin@example.com","password":"admin123","name":"Admin"}]
 
-# Optional: Default model (default is gemini-2.5-flash)
-VITE_DEFAULT_MODEL=gemini-2.5-flash
+# Default OpenRouter model
+VITE_DEFAULT_MODEL=google/gemma-4-31b-it
 ```
 
 **Vercel Deployment:**
@@ -29,11 +29,11 @@ VITE_DEFAULT_MODEL=gemini-2.5-flash
 1. Go to Vercel Project Settings → Environment Variables
 2. Add these variables for `Production`, `Preview`, `Development`:
 
-| Name                  | Value               | Notes                                 |
-| --------------------- | ------------------- | ------------------------------------- |
-| `VITE_GEMINI_API_KEY` | Your Gemini API Key | **Required**                          |
-| `VITE_AUTH_USERS`     | JSON array of users | **Required** - see format below       |
-| `VITE_DEFAULT_MODEL`  | Model name          | Optional, default: `gemini-2.5-flash` |
+| Name                  | Value               | Notes                                      |
+| --------------------- | ------------------- | ------------------------------------------ |
+| `VITE_GEMINI_API_KEY` | Your Gemini API Key | **Required**                               |
+| `VITE_AUTH_USERS`     | JSON array of users | **Required** - see format below            |
+| `VITE_DEFAULT_MODEL`  | Model name          | Optional, default: `google/gemma-4-31b-it` |
 
 **Auth Users Format (JSON):**
 
@@ -54,10 +54,7 @@ VITE_DEFAULT_MODEL=gemini-2.5-flash
 
 **Available Models:**
 
-- `gemini-2.5-flash` (recommended, default)
-- `gemini-2.0-flash`
-- `gemini-1.5-pro`
-- `gemini-1.5-flash`
+- `google/gemma-4-31b-it` (recommended, default)
 
 ### 3. Authentication
 
@@ -120,7 +117,7 @@ const reply = await chat.sendMessage("Hello");
 const stream = await geminiService.streamContent("Your prompt");
 
 // Change model dynamically
-geminiService.setModel("gemini-1.5-pro");
+geminiService.setModel("google/gemma-4-31b-it");
 ```
 
 ### 6. Example Component
@@ -181,10 +178,7 @@ Before deploying to Vercel:
 
 All these models are available through model selector:
 
-- `gemini-2.5-flash` ⭐ (recommended, default)
-- `gemini-2.0-flash`
-- `gemini-1.5-pro`
-- `gemini-1.5-flash`
+- `google/gemma-4-31b-it` ⭐ (recommended, default)
 
 Change default via `VITE_DEFAULT_MODEL` environment variable.
 

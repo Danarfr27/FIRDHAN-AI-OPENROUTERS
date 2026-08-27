@@ -1,8 +1,7 @@
 import React, { createContext, useState, useContext, type ReactNode } from "react";
 
 export type OpenRouterModel =
-  | "poolside/laguna-s-2.1"
-  | "poolside/laguna-xs-2.1";
+  | "google/gemma-4-31b-it";
 
 interface ModelContextType {
   selectedModel: OpenRouterModel;
@@ -10,13 +9,12 @@ interface ModelContextType {
   availableModels: { id: OpenRouterModel; name: string; description: string }[];
 }
 
-const defaultModel: OpenRouterModel = "poolside/laguna-s-2.1";
+const defaultModel: OpenRouterModel = "google/gemma-4-31b-it";
 
 const getDefaultModel = (): OpenRouterModel => {
   const envModel = import.meta.env.VITE_DEFAULT_MODEL as string | undefined;
   const validModels: OpenRouterModel[] = [
-    "poolside/laguna-s-2.1",
-    "poolside/laguna-xs-2.1",
+    "google/gemma-4-31b-it",
   ];
 
   if (envModel && validModels.includes(envModel as OpenRouterModel)) {
@@ -32,14 +30,9 @@ export const ModelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const availableModels = [
     {
-      id: "poolside/laguna-s-2.1" as OpenRouterModel,
-      name: "Poolside Laguna S 2.1",
-      description: "Model valid dan tersedia untuk OpenRouter; cepat dan stabil.",
-    },
-    {
-      id: "poolside/laguna-xs-2.1" as OpenRouterModel,
-      name: "Poolside Laguna XS 2.1",
-      description: "Model cepat, ringan, dan tersedia di OpenRouter.",
+      id: "google/gemma-4-31b-it" as OpenRouterModel,
+      name: "Google Gemma 4 31B IT",
+      description: "Model instruksi untuk analisis dan pengujian keamanan.",
     },
   ];
 
